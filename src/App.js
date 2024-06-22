@@ -8,6 +8,7 @@ import Result from './components/Result';
 import Question from './components/Question';
 import WelcomePage from './components/Welcome';
 import NavBar from './components/NavBar';
+import QuestionList from './components/QuestionList';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('access_token'));
@@ -39,7 +40,13 @@ const App = () => {
                         <Question />
                     </ProtectedRoute>
                 } />
-                {/* Add other routes as needed */}
+                
+                <Route path="/question-list" element={
+                    <ProtectedRoute>
+                        <QuestionList />
+                    </ProtectedRoute>
+                } />
+
             </Routes>
         </Router>
     );

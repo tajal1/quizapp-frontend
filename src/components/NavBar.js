@@ -1,14 +1,17 @@
+// NavBar.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
+
   return (
     <div style={styles.navBar}>
       <div style={styles.logo}>
         <h2>Quiz Application</h2>
       </div>
-      <div style={styles.navButtons}>
-        <button style={styles.button} >Login</button>
-        <button style={styles.button}>Registration</button>
+      <div style={styles.navLinks}>
+        <Link to="/login" style={styles.link}>Login</Link>
+        <Link to="/register" style={styles.link}>Registration</Link>
       </div>
     </div>
   );
@@ -26,17 +29,14 @@ const styles = {
   logo: {
     fontSize: '1.5em',
   },
-  navButtons: {
+  navLinks: {
     display: 'flex',
-    gap: '10px',
+    gap: '20px',
   },
-  button: {
-    padding: '10px 20px',
+  link: {
+    color: 'white',
+    textDecoration: 'none',
     fontSize: '1em',
-    color: '#282c34',
-    backgroundColor: 'white',
-    border: 'none',
-    borderRadius: '5px',
     cursor: 'pointer',
   },
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -10,34 +10,34 @@ import WelcomePage from './components/Welcome';
 import NavBar from './components/NavBar';
 
 const App = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('access_token'));
+
+    const handleLogin = (token) => {
+        localStorage.setItem('access_token', token);
+        setIsLoggedIn(true);
+    };
+    const token = localStorage.removeItem('access_token');;
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        setIsLoggedIn(false);
+    };
+
     return (
-        <AuthProvider>
-            <NavBar/>
-            <Router>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route 
-                        path="/result" 
-                        element={
-                            <ProtectedRoute>
-                                <Result />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    <Route 
-                        path="/question" 
-                        element={
-                            <ProtectedRoute>
-                                <Question />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    <Route path="/" element={ <WelcomePage/>} />
-                </Routes>
-            </Router>
-        </AuthProvider>
+        <Router>
+            <NavBar />
+            <Routes>
+                <Route path="/login" element={<Login onLogin={handleLogin} />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/welcome" element={
+                    <ProtectedRoute>
+                        <WelcomePage />
+                    </ProtectedRoute>
+                } />
+                {/* Add other routes as needed */}
+            </Routes>
+        </Router>
     );
 };
 
 export default App;
+

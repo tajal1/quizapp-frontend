@@ -16,7 +16,7 @@ const App = () => {
         localStorage.setItem('access_token', token);
         setIsLoggedIn(true);
     };
-    const token = localStorage.removeItem('access_token');;
+
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         setIsLoggedIn(false);
@@ -24,13 +24,19 @@ const App = () => {
 
     return (
         <Router>
-            <NavBar />
+            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
             <Routes>
                 <Route path="/login" element={<Login onLogin={handleLogin} />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/welcome" element={
                     <ProtectedRoute>
                         <WelcomePage />
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/question" element={
+                    <ProtectedRoute>
+                        <Question />
                     </ProtectedRoute>
                 } />
                 {/* Add other routes as needed */}

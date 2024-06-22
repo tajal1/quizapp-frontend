@@ -1,17 +1,28 @@
-// NavBar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NavBar = () => {
-
+const NavBar = ({ isLoggedIn, handleLogout }) => {
   return (
     <div style={styles.navBar}>
       <div style={styles.logo}>
         <h2>Quiz Application</h2>
       </div>
       <div style={styles.navLinks}>
-        <Link to="/login" style={styles.link}>Login</Link>
-        <Link to="/register" style={styles.link}>Registration</Link>
+        {isLoggedIn ? (
+          <>
+            <span onClick={handleLogout} style={styles.link}>Logout</span>
+            <span style={styles.link}>
+              <Link to="/question" style={styles.link}>Question</Link>
+            </span>
+          </>
+
+
+        ) : (
+          <>
+            <Link to="/login" style={styles.link}>Login</Link>
+            <Link to="/register" style={styles.link}>Registration</Link>
+          </>
+        )}
       </div>
     </div>
   );

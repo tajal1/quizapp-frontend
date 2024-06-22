@@ -1,7 +1,8 @@
 import React from 'react';
 
 const Question = () => {
-    return <div>Question Page</div>;
+    const token = localStorage.getItem('access_token');
+    return <div>Question  Page</div>;
 };
 
 export default Question;

@@ -14,6 +14,10 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
             <span style={styles.link}>
               <Link to="/question" style={styles.link}>Question</Link>
             </span>
+
+            <span style={styles.link}>
+              <Link to="/create-quiz" style={styles.link}>Create Quiz</Link>
+            </span>
           </>
 
 

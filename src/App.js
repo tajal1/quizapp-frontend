@@ -13,6 +13,8 @@ import CreateQuiz from './components/CreateQuiz';
 import QuizList from './components/QuizList';
 import QuizDetails from './components/QuizDetails';
 import QuizStart from './components/QuizStart';
+import Profile from './components/Profile';
+import NotFound from './components/NotFound';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('access_token'));
@@ -80,6 +82,14 @@ const App = () => {
                         <Result />
                     </ProtectedRoute>
                 } />
+
+                <Route path="/profile" element={
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>
+                } />
+
+                <Route path="*" element={<NotFound/>} />
 
             </Routes>
         </Router>

@@ -29,9 +29,10 @@ const WelcomePage = () => {
             <i className="fas fa-eye"></i> Quiz
           </Link>
         </span>
+
         <span className="link">
-          <Link to="/results" className="link">
-            <i className="fas fa-chart-bar"></i> Results
+          <Link to="/profile" className="link">
+            <i className="fas fa-chart-bar"></i> Profile
           </Link>
         </span>
       </div>

@@ -38,8 +38,8 @@ const QuizDetails = () => {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <button onClick={() => navigate('/')} style={styles.backButton}>
-          Back to Quiz List
+        <button onClick={() => navigate('/quiz-list')} style={styles.backButton}>
+          Quiz List
         </button>
         <button onClick={() => handleStartQuiz(detail._id)} style={styles.startButton}>
           Start Quiz

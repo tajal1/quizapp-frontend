@@ -64,8 +64,8 @@ const QuizStart = () => {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <button onClick={() => navigate('/')} style={styles.backButton}>
-          Back to Quiz List
+        <button onClick={() => navigate('/quiz-list')} style={styles.backButton}>
+          Quiz List
         </button>
       </div>
       <h3>Start Quiz for Subject: {detail?.subject_name} ({detail?.subject_code})</h3>

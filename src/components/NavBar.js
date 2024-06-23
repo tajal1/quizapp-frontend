@@ -11,16 +11,13 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
         {isLoggedIn ? (
           <>
             <span onClick={handleLogout} style={styles.link}>Logout</span>
+
             <span style={styles.link}>
               <Link to="/welcome" style={styles.link}>Home</Link>
             </span>
 
             <span style={styles.link}>
-              <Link to="/question" style={styles.link}>Question</Link>
-            </span>
-
-            <span style={styles.link}>
-              <Link to="/create-quiz" style={styles.link}>Create Quiz</Link>
+              <Link to="/profile" style={styles.link}>Profile</Link>
             </span>
           </>
 

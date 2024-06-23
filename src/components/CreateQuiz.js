@@ -3,6 +3,7 @@ import { Formik, Field, Form, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/CreateQuiz.css';
 
 const SUBJECT_CODE = {
   CODE_ENUM: ['math101', 'ban102', 'eng103'],
@@ -19,9 +20,9 @@ const validationSchema = Yup.object().shape({
       quiz_number: Yup.number()
         .required('Please enter quiz number.')
         .max(99, 'Quiz number must be at most 99.')
-        .typeError('Quiz number must be a number.')
+        .typeError('Quiz number must be a number.'),
     })
-  )
+  ),
 });
 
 const CreateQuiz = () => {
@@ -47,100 +48,81 @@ const CreateQuiz = () => {
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ values, isSubmitting, errors, touched }) => (
-        <Form>
-          <FieldArray name="quiz_number_per_subject">
-            {({ insert, remove, push }) => (
-              <div>
-                {values.quiz_number_per_subject.length > 0 &&
-                  values.quiz_number_per_subject.map((field, index) => (
-                    <div key={index} style={styles.fieldRow}>
-                      <Field
-                        name={`quiz_number_per_subject.${index}.subject_code`}
-                        as="select"
-                        style={styles.select}
-                      >
-                        <option value="">Select Subject Code</option>
-                        {SUBJECT_CODE.CODE_ENUM.map((code) => (
-                          <option key={code} value={code}>
-                            {code}
-                          </option>
-                        ))}
-                      </Field>
-                      {errors.quiz_number_per_subject?.[index]?.subject_code &&
-                        touched.quiz_number_per_subject?.[index]?.subject_code && (
-                          <div style={styles.error}>
-                            {errors.quiz_number_per_subject[index].subject_code}
-                          </div>
-                        )}
-                      <Field
-                        name={`quiz_number_per_subject.${index}.quiz_number`}
-                        type="number"
-                        placeholder="Quiz Number"
-                        style={styles.input}
-                      />
-                      {errors.quiz_number_per_subject?.[index]?.quiz_number &&
-                        touched.quiz_number_per_subject?.[index]?.quiz_number && (
-                          <div style={styles.error}>
-                            {errors.quiz_number_per_subject[index].quiz_number}
-                          </div>
-                        )}
-                      <button
-                        type="button"
-                        onClick={() => remove(index)}
-                        style={styles.button}
-                      >
-                        x
-                      </button>
+    <div className="login-container">
+      <h2>Create Quiz</h2>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, isSubmitting, errors, touched }) => (
+          <Form className="login-form">
+            <FieldArray name="quiz_number_per_subject">
+              {({ remove, push }) => (
+                <>
+                  {values.quiz_number_per_subject.map((_, index) => (
+                    <div key={index} className="quiz-entry">
+                      <div className="quiz-header">
+                        <button
+                          type="button"
+                          onClick={() => push({ subject_code: '', quiz_number: '' })}
+                          className="add-button"
+                        >
+                          +
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => remove(index)}
+                         className="add-button"
+                        >
+                          x
+                        </button>
+                      </div>
+                      <div className="quiz-fields">
+                        <Field
+                          name={`quiz_number_per_subject.${index}.subject_code`}
+                          as="select"
+                          className="login-input"
+                        >
+                          <option value="">Select Subject Code</option>
+                          {SUBJECT_CODE.CODE_ENUM.map((code) => (
+                            <option key={code} value={code}>
+                              {code}
+                            </option>
+                          ))}
+                        </Field>
+                        {errors.quiz_number_per_subject?.[index]?.subject_code &&
+                          touched.quiz_number_per_subject?.[index]?.subject_code && (
+                            <div className="error-message">
+                              {errors.quiz_number_per_subject[index].subject_code}
+                            </div>
+                          )}
+                        <Field
+                          name={`quiz_number_per_subject.${index}.quiz_number`}
+                          type="number"
+                          placeholder="Quiz Number"
+                          className="login-input"
+                        />
+                        {errors.quiz_number_per_subject?.[index]?.quiz_number &&
+                          touched.quiz_number_per_subject?.[index]?.quiz_number && (
+                            <div className="error-message">
+                              {errors.quiz_number_per_subject[index].quiz_number}
+                            </div>
+                          )}
+                      </div>
                     </div>
                   ))}
-                <button
-                  type="button"
-                  onClick={() => push({ subject_code: '', quiz_number: '' })}
-                  style={styles.button}
-                >
-                  +
-                </button>
-              </div>
-            )}
-          </FieldArray>
-          <button type="submit" disabled={isSubmitting} style={styles.submitButton}>
-            Submit
-          </button>
-        </Form>
-      )}
-    </Formik>
+                </>
+              )}
+            </FieldArray>
+            <button type="submit" disabled={isSubmitting} className="login-button">
+              Submit
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 
-const styles = {
-  fieldRow: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  select: {
-    marginRight: '10px',
-  },
-  input: {
-    marginRight: '10px',
-  },
-  button: {
-    marginLeft: '10px',
-  },
-  submitButton: {
-    marginTop: '10px',
-  },
-  error: {
-    color: 'red',
-    marginLeft: '10px',
-  },
-};
-
 export default CreateQuiz;
-

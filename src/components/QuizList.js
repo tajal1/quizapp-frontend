@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -20,97 +22,66 @@ const QuizList = () => {
     fetchQuizzes();
   }, []);
 
-  const handleDelete = async (quizId, quizDetailsId, quizQuestionId) => {
-    const token = localStorage.getItem('access_token');
-    try {
-      await axios.delete(`http://localhost:3001/api/v1/quizes/${quizId}/details/${quizDetailsId}/questions/${quizQuestionId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setQuizzes(quizzes.map(quiz => {
-        if (quiz._id === quizId) {
-          return {
-            ...quiz,
-            quiz_details: quiz.quiz_details.map(detail => {
-              if (detail._id === quizDetailsId) {
-                return {
-                  ...detail,
-                  quizes: detail.quizes.filter(question => question._id !== quizQuestionId)
-                };
-              }
-              return detail;
-            })
-          };
-        }
-        return quiz;
-      }));
-    } catch (error) {
-      console.error('There was an error deleting the quiz question!', error);
-    }
-  };
-
-  const handleEdit = (id) => {
-    // Handle edit logic
-    console.log('Edit quiz with ID:', id);
+  const handleDetailsClick = (quizId) => {
+    navigate(`/quiz-details/${quizId}`);
   };
 
   return (
     <div style={styles.container}>
       <h2>Quiz List</h2>
-      {quizzes.map(quiz => (
-        <div key={quiz._id}>
-          <h3>Quiz ID: {quiz._id}</h3>
-          {quiz.quiz_details.map(detail => (
-            <div key={detail._id}>
-              <h4>Subject: {detail.subject_name} ({detail.subject_code})</h4>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Question</th>
-                    <th>Answer</th>
-                    <th>Positive Score</th>
-                    <th>Negative Score</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {detail.quizes.map(question => (
-                    <tr key={question._id}>
-                      <td>{question.question}</td>
-                      <td>{question.answer}</td>
-                      <td>{question.positive_score}</td>
-                      <td>{question.negetive_score}</td>
-                      <td>
-                        <button onClick={() => handleEdit(question._id)} style={styles.button}>
-                          Edit
-                        </button>
-                        <button onClick={() => handleDelete(quiz._id, detail._id, question._id)} style={styles.button}>
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th>Total Positive Score</th>
+            <th>Total Negative Score</th>
+            <th>Submit Status</th>
+            <th>Score</th>
+            <th>Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          {quizzes.map((quiz) => (
+            <tr key={quiz._id} style={styles.row}>
+              <td>{quiz.total_positive_score}</td>
+              <td>{quiz.total_negative_score}</td>
+              <td>{quiz.submit_status}</td>
+              <td>{quiz.score}</td>
+              <td>
+                <button
+                  onClick={() => handleDetailsClick(quiz._id)}
+                  style={styles.detailsButton}
+                >
+                  Details
+                </button>
+              </td>
+            </tr>
           ))}
-        </div>
-      ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 const styles = {
-    container: {
-      padding: '20px',
-    },
-    table: {
-      width: '100%',
-      borderCollapse: 'collapse',
-      marginBottom: '20px',
-    },
-    button: {
-      marginRight: '10px',
-    },
-  };
-  
-  export default QuizList;
+  container: {
+    padding: '20px',
+  },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+    marginBottom: '20px',
+  },
+  row: {
+    border: '1px solid #ddd',
+  },
+  detailsButton: {
+    backgroundColor: '#007bff',
+    color: 'white',
+    padding: '5px 10px',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+};
+
+export default QuizList;

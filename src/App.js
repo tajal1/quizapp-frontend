@@ -11,6 +11,8 @@ import NavBar from './components/NavBar';
 import QuestionList from './components/QuestionList';
 import CreateQuiz from './components/CreateQuiz';
 import QuizList from './components/QuizList';
+import QuizDetails from './components/QuizDetails';
+import QuizStart from './components/QuizStart';
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('access_token'));
@@ -58,6 +60,18 @@ const App = () => {
                 <Route path="/quiz-list" element={
                     <ProtectedRoute>
                         <QuizList />
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/quiz-details/:quizId" element={
+                    <ProtectedRoute>
+                        <QuizDetails />
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/quiz-start/:quizId/subject/:subjectId" element={
+                    <ProtectedRoute>
+                        <QuizStart />
                     </ProtectedRoute>
                 } />
 

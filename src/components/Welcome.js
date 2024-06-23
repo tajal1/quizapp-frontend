@@ -6,14 +6,21 @@ const WelcomePage = () => {
   return (
     <div className="welcome-container">
       <div className="sidebar">
+
+      <span className="link">
+          <Link to="/question" className="link">
+            <i className="fas fa-plus-circle"></i> Question
+          </Link>
+        </span>
+
         <span className="link">
           <Link to="/create-quiz" className="link">
             <i className="fas fa-plus-circle"></i> Create Quiz
           </Link>
         </span>
         <span className="link">
-          <Link to="/view-quizzes" className="link">
-            <i className="fas fa-eye"></i> View Quizzes
+          <Link to="/quiz-list" className="link">
+            <i className="fas fa-eye"></i> Quiz
           </Link>
         </span>
         <span className="link">

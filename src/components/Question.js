@@ -76,6 +76,7 @@ const Question = () => {
               onBlur={formik.handleBlur}
               value={formik.values[field]}
               style={styles.input}
+              placeholder={field.replace('_', ' ').toUpperCase()}
             />
             {formik.touched[field] && formik.errors[field] ? (
               <div style={styles.error}>{formik.errors[field]}</div>

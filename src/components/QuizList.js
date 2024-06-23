@@ -32,6 +32,7 @@ const QuizList = () => {
       <table style={styles.table}>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Total Positive Score</th>
             <th>Total Negative Score</th>
             <th>Submit Status</th>
@@ -42,6 +43,7 @@ const QuizList = () => {
         <tbody>
           {quizzes.map((quiz) => (
             <tr key={quiz._id} style={styles.row}>
+              <td>{quiz._id}</td>
               <td>{quiz.total_positive_score}</td>
               <td>{quiz.total_negative_score}</td>
               <td>{quiz.submit_status}</td>

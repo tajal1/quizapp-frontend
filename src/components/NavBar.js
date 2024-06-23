@@ -12,6 +12,10 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
           <>
             <span onClick={handleLogout} style={styles.link}>Logout</span>
             <span style={styles.link}>
+              <Link to="/welcome" style={styles.link}>Home</Link>
+            </span>
+
+            <span style={styles.link}>
               <Link to="/question" style={styles.link}>Question</Link>
             </span>
 
@@ -19,7 +23,6 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
               <Link to="/create-quiz" style={styles.link}>Create Quiz</Link>
             </span>
           </>
-
 
         ) : (
           <>

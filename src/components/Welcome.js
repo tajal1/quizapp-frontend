@@ -14,6 +14,12 @@ const WelcomePage = () => {
         </span>
 
         <span className="link">
+          <Link to="/question-list" className="link">
+          <i className="fas fa-eye"></i> Question List
+          </Link>
+        </span>
+
+        <span className="link">
           <Link to="/create-quiz" className="link">
             <i className="fas fa-plus-circle"></i> Create Quiz
           </Link>

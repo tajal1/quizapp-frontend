@@ -63,11 +63,10 @@ const Question = () => {
 
   return (
     <div style={styles.container}>
-      <h1>Question Page</h1>
+      <h1>Question Form</h1>
       <form onSubmit={formik.handleSubmit} style={styles.form}>
         {['question', 'a', 'b', 'c', 'd', 'answer'].map((field) => (
           <div key={field} style={styles.formGroup}>
-            <label htmlFor={field}>{field.replace('_', ' ').toUpperCase()}</label>
             <input
               id={field}
               name={field}
@@ -76,7 +75,7 @@ const Question = () => {
               onBlur={formik.handleBlur}
               value={formik.values[field]}
               style={styles.input}
-              placeholder={field.replace('_', ' ').toUpperCase()}
+              placeholder={`Enter ${field.replace('_', ' ').toUpperCase()}`}
             />
             {formik.touched[field] && formik.errors[field] ? (
               <div style={styles.error}>{formik.errors[field]}</div>
@@ -84,7 +83,6 @@ const Question = () => {
           </div>
         ))}
         <div style={styles.formGroup}>
-          <label htmlFor="subject_code">Subject Code</label>
           <select
             id="subject_code"
             name="subject_code"
@@ -92,6 +90,7 @@ const Question = () => {
             onBlur={formik.handleBlur}
             value={formik.values.subject_code}
             style={styles.select}
+            placeholder="Select subject code"
           >
             <option value="" label="Select subject code" />
             {SUBJECT_CODE.CODE_ENUM.map((code) => (
@@ -105,7 +104,6 @@ const Question = () => {
           ) : null}
         </div>
         <div style={styles.formGroup}>
-          <label htmlFor="subject_name">Subject Name</label>
           <select
             id="subject_name"
             name="subject_name"
@@ -113,6 +111,7 @@ const Question = () => {
             onBlur={formik.handleBlur}
             value={formik.values.subject_name}
             style={styles.select}
+            placeholder="Select subject name"
           >
             <option value="" label="Select subject name" />
             {SUBJECT_CODE.NAME_ENUM.map((name) => (
@@ -126,7 +125,6 @@ const Question = () => {
           ) : null}
         </div>
         <div style={styles.formGroup}>
-          <label htmlFor="positive_score">Positive Score</label>
           <input
             id="positive_score"
             name="positive_score"
@@ -135,13 +133,13 @@ const Question = () => {
             onBlur={formik.handleBlur}
             value={formik.values.positive_score}
             style={styles.input}
+            placeholder="Enter positive score"
           />
           {formik.touched.positive_score && formik.errors.positive_score ? (
             <div style={styles.error}>{formik.errors.positive_score}</div>
           ) : null}
         </div>
         <div style={styles.formGroup}>
-          <label htmlFor="negetive_score">Negative Score</label>
           <input
             id="negetive_score"
             name="negetive_score"
@@ -150,13 +148,14 @@ const Question = () => {
             onBlur={formik.handleBlur}
             value={formik.values.negetive_score}
             style={styles.input}
+            placeholder="Enter negetive score"
           />
           {formik.touched.negetive_score && formik.errors.negetive_score ? (
             <div style={styles.error}>{formik.errors.negetive_score}</div>
           ) : null}
         </div>
         <div style={styles.formGroup}>
-          <label htmlFor="is_approved">Is Approved</label>
+          <label htmlFor="is_approved" style={styles.label}>Is Approved</label>
           <input
             id="is_approved"
             name="is_approved"
@@ -179,9 +178,9 @@ const Question = () => {
 const styles = {
   container: {
     padding: '20px',
-    maxWidth: '600px',
+    maxWidth: '400px', // Adjust width as needed
     margin: '0 auto',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#ffffff',
     borderRadius: '8px',
     boxShadow: '0 0 10px rgba(0,0,0,0.1)',
   },
@@ -198,6 +197,8 @@ const styles = {
     marginBottom: '5px',
     borderRadius: '4px',
     border: '1px solid #ccc',
+    fontSize: '14px',
+    boxSizing: 'border-box',
   },
   select: {
     width: '100%',
@@ -205,21 +206,27 @@ const styles = {
     marginBottom: '5px',
     borderRadius: '4px',
     border: '1px solid #ccc',
+    fontSize: '14px',
+    boxSizing: 'border-box',
   },
   checkbox: {
-    marginLeft: '10px',
+    marginLeft: '5px',
   },
   button: {
-    padding: '10px 20px',
+    padding: '12px',
     backgroundColor: '#007bff',
     color: '#fff',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    transition: 'background-color 0.3s',
   },
   error: {
     color: 'red',
     fontSize: '12px',
+    marginTop: '2px',
   },
 };
 

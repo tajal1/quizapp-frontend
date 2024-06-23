@@ -2,6 +2,8 @@ import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Login.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -45,19 +47,22 @@ const Login = ({ onLogin }) => {
       const response = await axios.post('http://localhost:3001/api/v1/auth/login', { email, password });
       if (response?.data?.access_token) {
         onLogin(response?.data?.access_token);
+        toast.success('Login sucessfully')
         navigate('/welcome');
       } else {
         setEmailError('Wrong login credentials');
       }
     } catch (error) {
-      setEmailError('There was an error logging in!');
+      toast.error('There was an error logging in!')
     }
   };
 
 
   return (
     <div className="login-container">
+      
       <h2>Login Page</h2>
+      <ToastContainer />
       <form onSubmit={handleSubmit} className="login-form">
         <div className="input-container">
           {emailError && <div className="error-message">{emailError}</div>}

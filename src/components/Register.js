@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/Login.css';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -70,19 +72,14 @@ const Register = () => {
 
     try {
       const response = await axios.post('http://localhost:3001/api/v1/users', { username, email, password });
-      console.log(response.data)
-      if (response.data._id) {
-        navigate('/login');
-      } else {
-        setEmailError('Registration failed. Please try again.');
-      }
-    } catch (error) {
-      setEmailError('There was an error registering!');
-    }
+      if (response.data._id) navigate('/login');
+      else toast.error('Registration failed. Please try again.');
+    } catch (error) {toast.error('There was an error registering!');}
   };
 
   return (
     <div className="login-container">
+         <ToastContainer />
       <h2>Register</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="input-container">

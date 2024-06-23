@@ -24,9 +24,10 @@ const WelcomePage = () => {
             <i className="fas fa-plus-circle"></i> Create Quiz
           </Link>
         </span>
+
         <span className="link">
           <Link to="/quiz-list" className="link">
-            <i className="fas fa-eye"></i> Quiz
+            <i className="fas fa-eye"></i> Quiz List
           </Link>
         </span>
 

@@ -5,7 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 const QuizStart = () => {
   const { quizId, subjectId } = useParams();
   const [quiz, setQuiz] = useState(null);
-  const [currentDetailIndex, setCurrentDetailIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const navigate = useNavigate();
 
@@ -13,10 +12,9 @@ const QuizStart = () => {
     const fetchQuizDetails = async () => {
       const token = localStorage.getItem('access_token');
       try {
-        const response = await axios.patch(`http://localhost:3001/api/v1/quizes/${quizId}/subject/${subjectId}`,{}, {
+        const response = await axios.get(`http://localhost:3001/api/v1/quizes/${quizId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('=====================<>', response.data)
         setQuiz(response.data);
       } catch (error) {
         console.error('There was an error fetching the quiz details!', error);
@@ -42,16 +40,26 @@ const QuizStart = () => {
       })),
     };
     try {
-      await axios.post(`http://localhost:3001/api/v1/quizes/${quizId}/subject/${subjectId}`, payload, {
+      await axios.put(`http://localhost:3001/api/v1/quizes/${quizId}/subject/${subjectId}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Quiz submitted!');
+      // let isAllSubjectSubmitted =  
+      // quiz.quiz_details.forEach(element => {
+      // });
+      navigate(`/quiz-details/${quizId}`)
     } catch (error) {
       console.error('There was an error submitting the quiz!', error);
     }
   };
 
-  if (!quiz) return <div>Loading...</div>;
+  const backToQuizdetails = async () =>{
+    navigate(`/quiz-details/${quizId}`)
+  }
+
+  if (!quiz) return <div>No content found</div>;
+
+  const detail = quiz.quiz_details?.find((d) => d._id === subjectId);
 
   return (
     <div style={styles.container}>
@@ -59,14 +67,11 @@ const QuizStart = () => {
         <button onClick={() => navigate('/')} style={styles.backButton}>
           Back to Quiz List
         </button>
-        <button onClick={handleSubmit} style={styles.submitButton}>
-          Submit Quiz
-        </button>
       </div>
-      <h3>Start Quiz for Subject: {quiz?.subject_name} ({quiz?.subject_code})</h3>
-      <div key={quiz?._id} style={styles.detailContainer}>
+      <h3>Start Quiz for Subject: {detail?.subject_name} ({detail?.subject_code})</h3>
+      <div key={detail?._id} style={styles.detailContainer}>
         <ul>
-          {quiz?.quizes.map((question) => (
+          {detail?.quizes.map((question) => (
             <li key={question._id} style={styles.questionContainer}>
               <p style={styles.questionTitle}>Question: {question.question}</p>
               <div style={styles.options}>
@@ -75,7 +80,7 @@ const QuizStart = () => {
                     type="radio"
                     name={question._id}
                     value="a"
-                    disabled={quiz?.subject_quiz_submit_status === 'submit'}
+                    disabled={detail?.subject_quiz_submit_status === 'submit'}
                     checked={userAnswers[question._id] === 'a'}
                     onChange={() => handleAnswerChange(question._id, 'a')}
                   />
@@ -86,7 +91,7 @@ const QuizStart = () => {
                     type="radio"
                     name={question._id}
                     value="b"
-                    disabled={quiz?.subject_quiz_submit_status === 'submit'}
+                    disabled={detail?.subject_quiz_submit_status === 'submit'}
                     checked={userAnswers[question._id] === 'b'}
                     onChange={() => handleAnswerChange(question._id, 'b')}
                   />
@@ -97,7 +102,7 @@ const QuizStart = () => {
                     type="radio"
                     name={question._id}
                     value="c"
-                    disabled={quiz?.subject_quiz_submit_status === 'submit'}
+                    disabled={detail?.subject_quiz_submit_status === 'submit'}
                     checked={userAnswers[question._id] === 'c'}
                     onChange={() => handleAnswerChange(question._id, 'c')}
                   />
@@ -108,7 +113,7 @@ const QuizStart = () => {
                     type="radio"
                     name={question._id}
                     value="d"
-                    disabled={quiz?.subject_quiz_submit_status === 'submit'}
+                    disabled={detail?.subject_quiz_submit_status === 'submit'}
                     checked={userAnswers[question._id] === 'd'}
                     onChange={() => handleAnswerChange(question._id, 'd')}
                   />
@@ -120,24 +125,11 @@ const QuizStart = () => {
         </ul>
       </div>
       <div style={styles.navigationButtons}>
-        <button
-          onClick={() => setCurrentDetailIndex(Math.max(currentDetailIndex - 1, 0))}
-          disabled={currentDetailIndex === 0}
-          style={styles.navButton}
-        >
-          Previous
+      <button onClick = {backToQuizdetails} style={styles.navButton}>
+          Back
         </button>
-        <button
-          onClick={() => {
-            if (currentDetailIndex === quiz?.quizes.length - 1) {
-              handleSubmit();
-            } else {
-              setCurrentDetailIndex(currentDetailIndex + 1);
-            }
-          }}
-          style={styles.navButton}
-        >
-          {currentDetailIndex === quiz?.quizes.length - 1 ? 'Submit' : 'Next'}
+        <button onClick={handleSubmit} style={styles.navButton}>
+          Submit Quiz
         </button>
       </div>
     </div>

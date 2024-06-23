@@ -27,6 +27,9 @@ const QuizDetails = () => {
   const handleStartQuiz = (subjectId) => {
     navigate(`/quiz-start/${quizId}/subject/${subjectId}`);
   };
+  const handleScore = () =>{
+    navigate(`/quiz-score/${quizId}`);
+  }
 
   if (!quiz) return <div>Loading...</div>;
 
@@ -83,6 +86,15 @@ const QuizDetails = () => {
         >
           Previous
         </button>
+
+        <button
+          onClick={handleScore}
+          style={styles.navButton}
+        >
+          Final submission
+        </button>
+
+
         <button
           onClick={() => setCurrentDetailIndex(Math.min(currentDetailIndex + 1, quiz.quiz_details.length - 1))}
           disabled={currentDetailIndex === quiz.quiz_details.length - 1}

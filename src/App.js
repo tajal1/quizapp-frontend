@@ -75,6 +75,12 @@ const App = () => {
                     </ProtectedRoute>
                 } />
 
+                <Route path="/quiz-score/:quizId" element={
+                    <ProtectedRoute>
+                        <Result />
+                    </ProtectedRoute>
+                } />
+
             </Routes>
         </Router>
     );

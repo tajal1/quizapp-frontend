@@ -1,48 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const QuestionList = () => {
   const [questions, setQuestions] = useState([]);
-  const token = localStorage.getItem('access_token');
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/v1/questions', {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const fetchQuestions = async () => {
+      const token = localStorage.getItem('access_token');
+      try {
+        const response = await axios.get('http://localhost:3001/api/v1/questions', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setQuestions(response.data);
+      } catch (error) {
+        console.error('There was an error fetching the questions!', error);
       }
-    })
-    .then(response => {
-      setQuestions(response.data);
-    })
-    .catch(error => {
-      console.error('There was an error fetching the questions!', error);
-    });
-  }, [token]);
+    };
 
-  const handleEdit = (id) => {
-    navigate(`/edit-question/${id}`);
-  };
-
-  const handleDelete = (id) => {
-    axios.delete(`http://localhost:3001/api/v1/questions/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(response => {
-      setQuestions(questions.filter(question => question._id !== id));
-    })
-    .catch(error => {
-      console.error('There was an error deleting the question!', error);
-    });
-  };
+    fetchQuestions();
+  }, []);
 
   return (
     <div style={styles.container}>
-      <h1>Question List</h1>
+      <h2>Question List</h2>
       <table style={styles.table}>
         <thead>
           <tr>
@@ -57,27 +40,22 @@ const QuestionList = () => {
             <th>Positive Score</th>
             <th>Negative Score</th>
             <th>Approved</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {questions.map(question => (
-            <tr key={question._id}>
-              <td>{question.question}</td>
-              <td>{question.a}</td>
-              <td>{question.b}</td>
-              <td>{question.c}</td>
-              <td>{question.d}</td>
-              <td>{question.subject_code}</td>
-              <td>{question.subject_name}</td>
-              <td>{question.answer}</td>
-              <td>{question.positive_score}</td>
-              <td>{question.negetive_score}</td>
-              <td>{question.is_approved ? 'Yes' : 'No'}</td>
-              <td>
-                <FaEdit style={styles.icon} onClick={() => handleEdit(question._id)} />
-                <FaTrash style={styles.icon} onClick={() => handleDelete(question._id)} />
-              </td>
+          {questions.map((question) => (
+            <tr key={question._id} style={styles.row}>
+              <td style={styles.td}>{question.question}</td>
+              <td style={styles.td}>{question.a}</td>
+              <td style={styles.td}>{question.b}</td>
+              <td style={styles.td}>{question.c}</td>
+              <td style={styles.td}>{question.d}</td>
+              <td style={styles.td}>{question.subject_code}</td>
+              <td style={styles.td}>{question.subject_name}</td>
+              <td style={styles.td}>{question.answer}</td>
+              <td style={styles.td}>{question.positive_score}</td>
+              <td style={styles.td}>{question.negetive_score}</td>
+              <td style={styles.td}>{question.is_approved ? 'Yes' : 'No'}</td>
             </tr>
           ))}
         </tbody>
@@ -89,30 +67,39 @@ const QuestionList = () => {
 const styles = {
   container: {
     padding: '20px',
-    maxWidth: '1200px',
-    margin: '0 auto',
-    backgroundColor: '#f0f0f0',
+    margin: '20px auto',
+    backgroundColor: '#ffffff',
     borderRadius: '8px',
     boxShadow: '0 0 10px rgba(0,0,0,0.1)',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
+    fontSize: '14px',
+  },
+  row: {
+    borderBottom: '1px solid #ddd',
   },
   th: {
-    borderBottom: '1px solid #ddd',
-    padding: '8px',
+    borderBottom: '2px solid #ddd',
+    padding: '10px',
     textAlign: 'left',
+    backgroundColor: '#f8f8f8',
   },
   td: {
-    borderBottom: '1px solid #ddd',
-    padding: '8px',
+    padding: '10px',
     textAlign: 'left',
+    borderRight: '1px solid #ddd', // Adding right border to the table cells
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-around',
   },
   icon: {
     cursor: 'pointer',
     margin: '0 5px',
-  }
+    color: '#007bff',
+  },
 };
 
 export default QuestionList;

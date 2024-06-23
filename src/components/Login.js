@@ -47,11 +47,8 @@ const Login = ({ onLogin }) => {
       const response = await axios.post('http://localhost:3001/api/v1/auth/login', { email, password });
       if (response?.data?.access_token) {
         onLogin(response?.data?.access_token);
-        toast.success('Login sucessfully')
         navigate('/welcome');
-      } else {
-        setEmailError('Wrong login credentials');
-      }
+      } else  toast.error('Wrong login credentials')
     } catch (error) {
       toast.error('There was an error logging in!')
     }

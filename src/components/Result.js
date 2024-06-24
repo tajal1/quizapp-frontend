@@ -1,29 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Result = () => {
-  const { quizId } = useParams();
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    const fetchQuizResult = async () => {
-      const token = localStorage.getItem('access_token');
-      try {
-        const response = await axios.patch(`http://localhost:3001/api/v1/quizes/score/${quizId}`, {}, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setResult(response.data);
-      } catch (error) {
-        console.error('There was an error fetching the quiz result!', error);
-      }
-    };
-
-    fetchQuizResult();
-  }, [quizId]);
+  const location = useLocation();
+  const result = location.state?.result;
 
   if (!result) {
-    return <div style={styles.loading}>Loading...</div>;
+    return <div style={styles.error}>Error fetching the quiz result!</div>;
   }
 
   const totalScore = result.total_positive_score - result.total_negative_score;
@@ -51,9 +34,9 @@ const styles = {
     backgroundColor: '#f4f4f4',
     minHeight: '100vh',
   },
-  loading: {
+  error: {
     fontSize: '20px',
-    color: '#333',
+    color: 'red',
   },
   header: {
     fontSize: '24px',
@@ -67,11 +50,6 @@ const styles = {
     boxShadow: '0 0 10px rgba(0,0,0,0.1)',
     width: '300px',
     textAlign: 'left',
-  },
-  resultText: {
-    margin: '10px 0',
-    fontSize: '18px',
-    color: '#555',
   },
 };
 

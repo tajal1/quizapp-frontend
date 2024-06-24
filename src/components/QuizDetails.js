@@ -6,11 +6,12 @@ const QuizDetails = () => {
   const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [currentDetailIndex, setCurrentDetailIndex] = useState(0);
+  const [result, setResult] = useState(null);
   const navigate = useNavigate();
+  const token = localStorage.getItem('access_token');
 
   useEffect(() => {
     const fetchQuizDetails = async () => {
-      const token = localStorage.getItem('access_token');
       try {
         const response = await axios.get(`http://localhost:3001/api/v1/quizes/${quizId}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -22,14 +23,23 @@ const QuizDetails = () => {
     };
 
     fetchQuizDetails();
-  }, [quizId]);
+  }, [quizId, token]);
 
   const handleStartQuiz = (subjectId) => {
     navigate(`/quiz-start/${quizId}/subject/${subjectId}`);
   };
-  const handleScore = () =>{
-    navigate(`/quiz-score/${quizId}`);
-  }
+
+  const handleScore = async () => {
+    try {
+      const response = await axios.patch(`http://localhost:3001/api/v1/quizes/score/${quizId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setResult(response.data);
+      navigate(`/quiz-score/${quizId}`, { state: { result: response.data } });
+    } catch (error) {
+      console.error('There was an error fetching the quiz result!', error);
+    }
+  };
 
   if (!quiz) return <div>Loading...</div>;
 
@@ -91,9 +101,8 @@ const QuizDetails = () => {
           onClick={handleScore}
           style={styles.navButton}
         >
-          Final submission
+          Final Submission
         </button>
-
 
         <button
           onClick={() => setCurrentDetailIndex(Math.min(currentDetailIndex + 1, quiz.quiz_details.length - 1))}

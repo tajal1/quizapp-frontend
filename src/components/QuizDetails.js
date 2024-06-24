@@ -13,7 +13,7 @@ const QuizDetails = () => {
   useEffect(() => {
     const fetchQuizDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/v1/quizes/${quizId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/quizes/${quizId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setQuiz(response.data);
@@ -31,7 +31,7 @@ const QuizDetails = () => {
 
   const handleScore = async () => {
     try {
-      const response = await axios.patch(`http://localhost:3001/api/v1/quizes/score/${quizId}`, {}, {
+      const response = await axios.patch(`${process.env.REACT_APP_API_URL}/quizes/score/${quizId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResult(response.data);

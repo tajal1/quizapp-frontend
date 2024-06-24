@@ -35,7 +35,7 @@ const CreateQuiz = () => {
     const token = localStorage.getItem('access_token');
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/v1/quizes',
+        `${process.env.REACT_APP_API_URL}/quizes`,
         values,
         { headers: { Authorization: `Bearer ${token}` } }
       );

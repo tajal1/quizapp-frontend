@@ -46,7 +46,7 @@ const Question = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      axios.post('http://localhost:3001/api/v1/questions', values, {
+      axios.post(`${process.env.REACT_APP_API_URL}/questions`, values, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',

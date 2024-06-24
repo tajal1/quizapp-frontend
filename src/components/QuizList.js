@@ -10,7 +10,7 @@ const QuizList = () => {
     const fetchQuizzes = async () => {
       const token = localStorage.getItem('access_token');
       try {
-        const response = await axios.get('http://localhost:3001/api/v1/quizes', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/quizes`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setQuizzes(response.data);

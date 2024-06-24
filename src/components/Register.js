@@ -46,7 +46,7 @@ const Register = () => {
     if (usernameError || emailError || passwordError) return;
 
     try {
-      const response = await axios.post('http://localhost:3001/api/v1/users', { username, email, password });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, { username, email, password });
       if (response.data._id) navigate('/login');
       else toast.error('Registration failed. Please try again.');
     } catch (error) { toast.error('There was an error registering!'); }

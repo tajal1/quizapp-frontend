@@ -37,7 +37,7 @@ const Login = ({ onLogin }) => {
     if (emailError || passwordError) return;
 
     try {
-      const response = await axios.post('http://localhost:3001/api/v1/auth/login', { email, password });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password });
       if (response?.data?.access_token) {
         onLogin(response?.data?.access_token);
         navigate('/welcome');

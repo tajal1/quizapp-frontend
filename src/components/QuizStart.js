@@ -12,7 +12,7 @@ const QuizStart = () => {
     const fetchQuizDetails = async () => {
       const token = localStorage.getItem('access_token');
       try {
-        const response = await axios.get(`http://localhost:3001/api/v1/quizes/${quizId}`, {
+        const response = await axios.get( `${process.env.REACT_APP_API_URL}/quizes/${quizId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setQuiz(response.data);
@@ -40,7 +40,7 @@ const QuizStart = () => {
       })),
     };
     try {
-      await axios.put(`http://localhost:3001/api/v1/quizes/${quizId}/subject/${subjectId}`, payload, {
+      await axios.put(`${process.env.REACT_APP_API_URL}/quizes/${quizId}/subject/${subjectId}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Quiz submitted!');
